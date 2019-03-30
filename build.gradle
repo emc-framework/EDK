@@ -1,0 +1,35 @@
+import org.gradle.internal.os.OperatingSystem
+
+plugins {
+    id 'java'
+}
+ 
+def minecraftVersion = "1.13.2"
+def emcVersion = "13.8.2-${minecraftVersion}"
+def minecraftRoot = System.getenv('APPDATA') + "/.minecraft"
+ 
+if (OperatingSystem.current().isMacOsX()) {
+    minecraftRoot = System.getenv('HOME') + "/Library/Application Support/minecraft"
+} else if (OperatingSystem.current().isLinux()) {
+    minecraftRoot = System.getenv('HOME') + "/.minecraft"
+}
+ 
+group 'me.deftware'
+version '1.0-SNAPSHOT'
+ 
+sourceCompatibility = 1.8
+ 
+repositories {
+    mavenCentral()
+    maven { url 'https://gitlab.com/EMC-Framework/maven/raw/master/' }
+    maven { url 'https://libraries.minecraft.net/' }
+    maven { url 'https://www.dimdev.org/maven/' }
+}
+ 
+dependencies {
+    compile 'com.google.guava:guava:24.1-jre'
+    compile 'com.google.code.gson:gson:2.8.2'
+    compile "me.deftware:EMC:${emcVersion}"
+    compile files("${minecraftRoot}/versions/${minecraftVersion}/${minecraftVersion}.jar")
+	compile 'com.mojang:brigadier:1.0.14'
+}
